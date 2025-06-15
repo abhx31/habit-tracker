@@ -19,17 +19,19 @@ export interface Habit {
     category: string
     frequency: {
         type: "daily" | "weekly" | "monthly"
-        days?: number[] // For weekly: 0 = Sunday, 1 = Monday, etc.
-        dates?: number[] // For monthly: 1-31
+        days?: number[]
+        dates?: number[]
     }
     goal?: {
         target: number
         unit: string
     }
+    badge?: string
     color?: string
     icon?: string
     reminderTime?: string
     createdAt: string
+    updatedAt: string
     archivedAt?: string
 }
 
@@ -42,6 +44,11 @@ export interface HabitLog {
     value?: number
     notes?: string
     createdAt: string
+}
+
+export interface HabitLogResponse {
+    logs: HabitLog[]
+    currentStreak: number
 }
 
 export interface HabitStats {

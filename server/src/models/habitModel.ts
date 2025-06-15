@@ -1,36 +1,71 @@
 import mongoose from "mongoose";
 
-const HabitSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    category: String,
-    goal: {
-        target: {
-            type: Number,
-            required: true
-        },
-        unit: {
-            type: String,
-            required: true
-        }
-    },
-    frequency: {
-        type: {
-            type: String, // daily, weekly, etc.
-            required: true
-        }
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+enum Frequency {
+    DAILY = "daily",
+    WEEKLY = "weekly",
+    MONTHLY = "monthly",
+}
 
-export const Habit = mongoose.model('Habit', HabitSchema)
+enum Badge {
+    BRONZE = "Bronze",
+    SILVER = "Silver",
+    GOLD = "Gold",
+    DIAMOND = "Diamond",
+    ACE = "Ace",
+    OVERACHIEVER = "Overachiever"
+}
+
+const HabitSchema = new mongoose.Schema(
+    {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: false,
+        },
+        category: {
+            type: String,
+            required: true,
+        },
+        goal: {
+            target: {
+                type: Number,
+                required: false,
+            },
+            unit: {
+                type: String,
+                required: false,
+            },
+        },
+        frequency: {
+            type: {
+                type: String,
+                enum: Object.values(Frequency),
+                required: true,
+            },
+            days: {
+                type: [Number],
+                required: false,
+            },
+            dates: {
+                type: [Number],
+                required: false,
+            }
+        },
+        badge: {
+            type: String,
+            enum: Object.values(Badge),
+            default: Badge.BRONZE,
+        },
+    },
+    { timestamps: true }
+);
+
+export const Habit = mongoose.model("Habit", HabitSchema);

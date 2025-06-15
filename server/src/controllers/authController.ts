@@ -23,8 +23,11 @@ export const signup = async (req: Request, res: Response) => {
             password: hashPassword,
         })
 
+        const token = jwt.sign({ email }, process.env.JWT_PASSWORD as string);
+
         return res.status(201).json({
-            createUser
+            user: createUser,
+            token
         })
 
     } catch (err: unknown) {

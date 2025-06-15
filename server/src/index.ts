@@ -7,6 +7,7 @@ import cors from "cors"
 import habitRoutes from "./routes/habitRoutes";
 import { analyticsRoutes } from "./routes/analyticsRoutes";
 import { trackRoute } from "./routes/trackRoutes";
+import { todoRoute } from "./routes/todoRoutes";
 
 dotenv.config();
 const app = express()
@@ -23,9 +24,8 @@ app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/habits', habitRoutes)
 app.use('/api/v1/analytics', analyticsRoutes)
 app.use('/api/v1/track', trackRoute)
+app.use('/api/v1/todo', todoRoute)
 
 app.listen(process.env.PORT, () => {
     console.log(`App is listening on ${process.env.PORT}`);
 })
-
-

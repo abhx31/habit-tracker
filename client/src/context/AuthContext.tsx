@@ -98,15 +98,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const register = async (name: string, age: number, email: string, password: string) => {
-        const response = await fetch(`${AUTH_URL}/signup`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, age, email, password }),
-        })
+        try {
+            const response = await fetch(`${AUTH_URL}/signup`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, age, email, password }),
+            })
 
-        if (!response.ok) {
-            const error = await response.json()
-            toast("Registration failed", { description: error.message })
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed")
+            }
+
+            if (!data.token || !data.user) {
+                throw new Error("Token or user missing in response")
+            }
+
+            localStorage.setItem("token", data.token)
+            localStorage.setItem("user", JSON.stringify(data.user))
+            setToken(data.token)
+            setUser(data.user)
+        } catch (error) {
+            throw error
         }
     }
 
